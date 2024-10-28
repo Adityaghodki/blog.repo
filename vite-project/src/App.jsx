@@ -26,12 +26,14 @@ function App() {
           <Route path="/adminlogin" element={<AdminLogin />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/createblog" element={<CreateBlog />} />
+          {/* 404 Not Found Route */}
           <Route path="/*" element={<NoPage />} />
         </Routes>
-        <Toaster/>
+        {/* Toaster for Notifications */}
+        <Toaster />
       </Router>
     </MyState>
-  )
+  );
 }
 
-export default App
+export default App;
