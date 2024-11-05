@@ -13,6 +13,8 @@ function MyState(props) {
             document.body.style.backgroundColor = 'white';
         }
     }
+    const[searchkey, setSearchkey] = useState('')
+    const[loading, setloading] = useState(false);
     return (
         <MyContext.Provider value={{ mode, toggleMode }}>
             {props.children}
