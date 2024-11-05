@@ -1,15 +1,15 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
 import { BsFillArrowLeftCircleFill } from "react-icons/bs"
 import myContext from '../../../context/data/myContext';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
     Button,
     Typography,
 } from "@material-tailwind/react";
-import {Timestamp,addDoc, collection } from 'firebase/firestore';
+import { Timestamp, addDoc, collection } from 'firebase/firestore';
 import toast from 'react-hot-toast';
-import { getDownloadURL, ref , uploadBytes } from 'firebase/firestore';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { fireDb, storage } from '../../../firebase/FirebaseConfig';
 function CreateBlog() {
     const context = useContext(myContext);
@@ -21,7 +21,6 @@ function CreateBlog() {
         content : "",
         time : Timestamp.now(),
     });
-    
     const [thumbnail, setthumbnail] = useState();
 
     const [text, settext] = useState('');
@@ -29,42 +28,52 @@ function CreateBlog() {
     console.log("text: ", text);
 
     const navigate = useNavigate();
+    
+
+    // console.log(blogs)
 
     const addPost = async () => {
-        if(blogs.title === "" || bolgs.category === "" || blogs.content === "" || blogs.thumbnail === "" ){
-            return toast.error("all fields are required")
+        if(blogs.title === "" || blogs.category === "" || blogs.content === "" || blogs.thumbnail  === ""){
+            return toast.error("All fields are required")
         }
+        uploadImage();
     }
-    const uploadImage = async () => {
+
+    const uploadImage = () => {
         if (!thumbnail) return;
         const imageRef = ref(storage, `blogimage/${thumbnail.name}`);
-        uploadBytes(imageRef = collection(fireDb, "blogPost")
-                    try{
-                        addDoc(productRef, {
-                            blogs,
-                            thumbnail: url,
-                            time: Timestamp.now(),
-                            date: new Date().toLocaleString(
-                                "en-US",
+        uploadBytes(imageRef, thumbnail).then((snapshot) => {
+            getDownloadURL(snapshot.ref).then((url) => {
+                const productRef = collection(fireDb, "blogPost")
+                try {
+                    addDoc(productRef, {
+                        blogs,
+                        thumbnail: url,
+                        time: Timestamp.now(),
+                        date: new Date().toLocaleString(
+                            "en-US",
                             {
-                               month: "short",
-                               day: "2-digit",
-                               year: "numeric",
-                             } 
-                         )
-                    
-        })
-         navigate('/dashboard')
-         toast.success('Post Added Successufly');
+                                month: "short",
+                                day: "2-digit",
+                                year: "numeric",
+                            }
+                        )
+                    })
+                    navigate('/dashboard')
+                    toast.success('Post Added Successfully');
 
-        } catch (error) {
-            toast.error(error)
-            console.log(error)
 
-         }
-      });  
-    });
-}
+                } catch (error) {
+                    toast.error(error)
+                    console.log(error)
+                }
+            });
+        });
+    }
+    
+    useEffect(() => {
+        window.scrollTo(0, 0)
+ }, [])
 
     // Create markup function 
     function createMarkup(c) {
@@ -152,7 +161,7 @@ function CreateBlog() {
                         }}
                         name="title"
                         value={blogs.title}
-                        onChange={(e)}=> setBlogs({...blogs,title : e.target.value})}
+                        onChange={(e)=> setBlogs({...blogs, title : e.target.value})}
                     />
                 </div>
 
@@ -172,14 +181,13 @@ function CreateBlog() {
                         }}
                         name="category"
                         value={blogs.category}
-                        onChange={(e)}=> setBlogs({...blogs, category : e.target.value})}
+                        onChange={(e)=> setBlogs({...blogs, category : e.target.value})}
                     />
                 </div>
 
                 {/* Four Editor  */}
                 <Editor
-                //9jo3lu73p1xbfqaw6jvgmsbrmy7qr907nqeafe1wbek6os9d
-                    apiKey='n736gn8flpeflhhasursopjd6cwkxjiuej3b8tylh8e1hd7e'
+                    apiKey='9jo3lu73p1xbfqaw6jvgmsbrmy7qr907nqeafe1wbek6os9d'
                     onEditorChange={(newValue, editor) => {
                         setBlogs({ ...blogs, content: newValue });
                         settext(editor.getContent({ format: 'text' }));
@@ -194,7 +202,7 @@ function CreateBlog() {
 
                 {/* Five Submit Button  */}
                 <Button className=" w-full mt-5"
-                    onClick={addPost}
+                onClick={addPost}
                     style={{
                         background: mode === 'dark'
                             ? 'rgb(226, 232, 240)'
@@ -212,7 +220,8 @@ function CreateBlog() {
                     <h1 className=" text-center mb-3 text-2xl">Preview</h1>
                     <div className="content">
                     <div
-                        className={`[&> h1]:text-[32px] [&>h1]:font-bold  [&>h1]:mb-2.5
+                        className={`
+                        [&> h1]:text-[32px] [&>h1]:font-bold  [&>h1]:mb-2.5
                         ${mode === 'dark' ? '[&>h1]:text-[#ff4d4d]' : '[&>h1]:text-black'}
 
                         [&>h2]:text-[24px] [&>h2]:font-bold [&>h2]:mb-2.5
