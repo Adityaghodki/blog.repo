@@ -7,16 +7,64 @@ import {
     Button,
     Typography,
 } from "@material-tailwind/react";
+import {Timestamp,addDoc, collection } from 'firebase/firestore';
+import toast from 'react-hot-toast';
+import { getDownloadURL, ref , uploadBytes } from 'firebase/firestore';
+import { fireDb, storage } from '../../../firebase/FirebaseConfig';
 function CreateBlog() {
     const context = useContext(myContext);
     const { mode } = context;
 
-    const [blogs, setBlogs] = useState('');
+    const [blogs, setBlogs] = useState({
+        title : "",
+        category : "",
+        content : "",
+        time : Timestamp.now(),
+    });
+    
     const [thumbnail, setthumbnail] = useState();
 
     const [text, settext] = useState('');
     console.log("Value: ",);
     console.log("text: ", text);
+
+    const navigate = useNavigate();
+
+    const addPost = async () => {
+        if(blogs.title === "" || bolgs.category === "" || blogs.content === "" || blogs.thumbnail === "" ){
+            return toast.error("all fields are required")
+        }
+    }
+    const uploadImage = async () => {
+        if (!thumbnail) return;
+        const imageRef = ref(storage, `blogimage/${thumbnail.name}`);
+        uploadBytes(imageRef = collection(fireDb, "blogPost")
+                    try{
+                        addDoc(productRef, {
+                            blogs,
+                            thumbnail: url,
+                            time: Timestamp.now(),
+                            date: new Date().toLocaleString(
+                                "en-US",
+                            {
+                               month: "short",
+                               day: "2-digit",
+                               year: "numeric",
+                             } 
+                         )
+                    
+        })
+         navigate('/dashboard')
+         toast.success('Post Added Successufly');
+
+        } catch (error) {
+            toast.error(error)
+            console.log(error)
+
+         }
+      });  
+    });
+}
 
     // Create markup function 
     function createMarkup(c) {
@@ -103,6 +151,8 @@ function CreateBlog() {
                                 : 'rgb(226, 232, 240)'
                         }}
                         name="title"
+                        value={blogs.title}
+                        onChange={(e)}=> setBlogs({...blogs,title : e.target.value})}
                     />
                 </div>
 
@@ -121,6 +171,8 @@ function CreateBlog() {
                                 : 'rgb(226, 232, 240)'
                         }}
                         name="category"
+                        value={blogs.category}
+                        onChange={(e)}=> setBlogs({...blogs, category : e.target.value})}
                     />
                 </div>
 
@@ -129,7 +181,7 @@ function CreateBlog() {
                 //9jo3lu73p1xbfqaw6jvgmsbrmy7qr907nqeafe1wbek6os9d
                     apiKey='n736gn8flpeflhhasursopjd6cwkxjiuej3b8tylh8e1hd7e'
                     onEditorChange={(newValue, editor) => {
-                        setBlogs({ blogs, content: newValue });
+                        setBlogs({ ...blogs, content: newValue });
                         settext(editor.getContent({ format: 'text' }));
                     }}
                     onInit={(evt, editor) => {
@@ -142,6 +194,7 @@ function CreateBlog() {
 
                 {/* Five Submit Button  */}
                 <Button className=" w-full mt-5"
+                    onClick={addPost}
                     style={{
                         background: mode === 'dark'
                             ? 'rgb(226, 232, 240)'
