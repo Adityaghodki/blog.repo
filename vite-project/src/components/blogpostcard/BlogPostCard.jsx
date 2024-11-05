@@ -1,10 +1,15 @@
 import { Button } from '@material-tailwind/react'
 import React, { useContext } from 'react'
 import myContext from '../../context/data/myContext';
+import { useNavigate } from 'react-router';
+import { Link } from 'react-router-dom';
 
 function BlogPostCard() {
   const context = useContext(myContext);
-  const { mode } = context;
+  const { mode, getAllBlog } = context;
+  // console.log(getAllBlog)
+
+  const navigate = useNavigate();
 
   return (
     <div>
@@ -14,173 +19,72 @@ function BlogPostCard() {
           {/* Main Content  */}
           <div className="flex flex-wrap justify-center -m-4 mb-5">
             {/* Card 1  */}
-            <div className="p-4 md:w-1/3" >
-              <div
-                style={{
-                  background: mode === 'dark'
-                    ? 'rgb(30, 41, 59)'
-                    : 'white',
-                  borderBottom: mode === 'dark'
-                    ?
-                    ' 4px solid rgb(226, 232, 240)'
-                    : ' 4px solid rgb(30, 41, 59)'
-                }}
-                className={`h-full shadow-lg  hover:-translate-y-1 cursor-pointer hover:shadow-gray-400
+            {getAllBlog.length > 0
+              ? <> {getAllBlog.map((item, index) => {
+                console.log(item)
+                const {thumbnail, date, id} = item
+                return (
+                  <div className="p-4 md:w-1/3" >
+                    <div
+                      style={{
+                        background: mode === 'dark'
+                          ? 'rgb(30, 41, 59)'
+                          : 'white',
+                        borderBottom: mode === 'dark'
+                          ?
+                          ' 4px solid rgb(226, 232, 240)'
+                          : ' 4px solid rgb(30, 41, 59)'
+                      }}
+                      className={`h-full shadow-lg  hover:-translate-y-1 cursor-pointer hover:shadow-gray-400
                ${mode === 'dark'
-                   ? 'shadow-gray-700'
-                   : 'shadow-xl'
-                   } 
-               rounded-xl overflow-hidden`} 
-              >
-                {/* Blog Thumbnail  */}
-                <img className=" w-full" src={'https://firebasestorage.googleapis.com/v0/b/blog-fea71.appspot.com/o/blogimage%2FReact%20Introduction.png?alt=media&token=1ba7496b-2cbc-450c-ab1a-57e19882dc76'} alt="blog" />
+                          ? 'shadow-gray-700'
+                          : 'shadow-xl'
+                        } 
+               rounded-xl overflow-hidden`}
+                    >
+                      {/* Blog Thumbnail  */}
+                      <img 
+                      onClick={()=> navigate(`/bloginfo/${id}`)}
+                      className=" w-full" src={thumbnail} alt="blog" />
 
-                {/* Top Items  */}
-                <div className="p-6">
-                  {/* Blog Date  */}
-                  <h2 className="tracking-widest text-xs title-font font-medium text-gray-400 mb-1" style={{
-                    color: mode === 'dark'
-                      ? 'rgb(226, 232, 240)'
-                      : ' rgb(30, 41, 59)'
-                  }}>
-                    {'25 Sep 2023'}
-                  </h2>
+                      {/* Top Items  */}
+                      <div className="p-6">
+                        {/* Blog Date  */}
+                        <h2 className="tracking-widest text-xs title-font font-medium text-gray-400 mb-1" style={{
+                          color: mode === 'dark'
+                            ? 'rgb(226, 232, 240)'
+                            : ' rgb(30, 41, 59)'
+                        }}>
+                          {date}
+                        </h2>
 
-                  {/* Blog Title  */}
-                  <h1 className="title-font text-lg font-bold text-gray-900 mb-3" style={{
-                    color: mode === 'dark'
-                      ? 'rgb(226, 232, 240)'
-                      : ' rgb(30, 41, 59)'
-                  }}>
-                    {'React Introduction'}
-                  </h1>
+                        {/* Blog Title  */}
+                        <h1 className="title-font text-lg font-bold text-gray-900 mb-3" style={{
+                          color: mode === 'dark'
+                            ? 'rgb(226, 232, 240)'
+                            : ' rgb(30, 41, 59)'
+                        }}>
+                          {item.blogs.title}
+                        </h1>
 
-                  {/* Blog Description  */}
-                  <p className="leading-relaxed mb-3" style={{
-                    color: mode === 'dark'
-                      ? 'rgb(226, 232, 240)'
-                      : ' rgb(30, 41, 59)'
-                  }}>
-                    Photo booth fam kinfolk cold-pressed sriracha leggings jianbing microdosing tousled waistcoat.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Card 2  */}
-            <div className="p-4 md:w-1/3" >
-              <div
-                style={{
-                  background: mode === 'dark'
-                    ? 'rgb(30, 41, 59)'
-                    : 'white',
-                  borderBottom: mode === 'dark'
-                    ?
-                    ' 4px solid rgb(226, 232, 240)'
-                    : ' 4px solid rgb(30, 41, 59)'
-                }}
-               className={`h-full shadow-lg  hover:-translate-y-1 cursor-pointer hover:shadow-gray-400
-               ${mode === 'dark'
-                   ? 'shadow-gray-700'
-                   : 'shadow-xl'
-                   } 
-               rounded-xl overflow-hidden`} 
-              >
-                {/* Blog Thumbnail  */}
-                <img className=" w-full" src={'https://firebasestorage.googleapis.com/v0/b/blog-fea71.appspot.com/o/blogimage%2FReact%20Introduction.png?alt=media&token=1ba7496b-2cbc-450c-ab1a-57e19882dc76'} alt="blog" />
-
-                {/* Top Items  */}
-                <div className="p-6">
-                  {/* Blog Date  */}
-                  <h2 className="tracking-widest text-xs title-font font-medium text-gray-400 mb-1" style={{
-                    color: mode === 'dark'
-                      ? 'rgb(226, 232, 240)'
-                      : ' rgb(30, 41, 59)'
-                  }}>
-                    {'25 Sep 2023'}
-                  </h2>
-
-                  {/* Blog Title  */}
-                  <h1 className="title-font text-lg font-bold text-gray-900 mb-3" style={{
-                    color: mode === 'dark'
-                      ? 'rgb(226, 232, 240)'
-                      : ' rgb(30, 41, 59)'
-                  }}>
-                    {'React Introduction'}
-                  </h1>
-
-                  {/* Blog Description  */}
-                  <p className="leading-relaxed mb-3" style={{
-                    color: mode === 'dark'
-                      ? 'rgb(226, 232, 240)'
-                      : ' rgb(30, 41, 59)'
-                  }}>
-                    Photo booth fam kinfolk cold-pressed sriracha leggings jianbing microdosing tousled waistcoat.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Card 3 */}
-            <div className="p-4 md:w-1/3" >
-              <div
-                style={{
-                  background: mode === 'dark'
-                    ? 'rgb(30, 41, 59)'
-                    : 'white',
-                  borderBottom: mode === 'dark'
-                    ?
-                    ' 4px solid rgb(226, 232, 240)'
-                    : ' 4px solid rgb(30, 41, 59)'
-                }}
-                className={`h-full shadow-lg  hover:-translate-y-1 cursor-pointer hover:shadow-gray-400
-               ${mode === 'dark'
-                   ? 'shadow-gray-700'
-                   : 'shadow-xl'
-                   } 
-               rounded-xl overflow-hidden`} 
-              >
-                {/* Blog Thumbnail  */}
-                <img className=" w-full" src={'https://firebasestorage.googleapis.com/v0/b/blog-fea71.appspot.com/o/blogimage%2FReact%20Introduction.png?alt=media&token=1ba7496b-2cbc-450c-ab1a-57e19882dc76'} alt="blog" />
-
-                {/* Top Items  */}
-                <div className="p-6">
-                  {/* Blog Date  */}
-                  <h2 className="tracking-widest text-xs title-font font-medium text-gray-400 mb-1" style={{
-                    color: mode === 'dark'
-                      ? 'rgb(226, 232, 240)'
-                      : ' rgb(30, 41, 59)'
-                  }}>
-                    {'25 Sep 2023'}
-                  </h2>
-
-                  {/* Blog Title  */}
-                  <h1 className="title-font text-lg font-bold text-gray-900 mb-3" style={{
-                    color: mode === 'dark'
-                      ? 'rgb(226, 232, 240)'
-                      : ' rgb(30, 41, 59)'
-                  }}>
-                    {'React Introduction'}
-                  </h1>
-
-                  {/* Blog Description  */}
-                  <p className="leading-relaxed mb-3" style={{
-                    color: mode === 'dark'
-                      ? 'rgb(226, 232, 240)'
-                      : ' rgb(30, 41, 59)'
-                  }}>
-                    Photo booth fam kinfolk cold-pressed sriracha leggings jianbing microdosing tousled waistcoat.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-          
-
-           
+                        {/* Blog Description  */}
+                        <p className="leading-relaxed mb-3" style={{
+                          color: mode === 'dark'
+                            ? 'rgb(226, 232, 240)'
+                            : ' rgb(30, 41, 59)'
+                        }}>
+                          Photo booth fam kinfolk cold-pressed sriracha leggings jianbing microdosing tousled waistcoat.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )
+              })} </>
+              : <> <h1>Not Found</h1></>}
           </div>
 
           {/* See More Button  */}
+          <Link to={'/allblogs'}>
           <div className="flex justify-center my-5">
             <Button
               style={{
@@ -195,6 +99,7 @@ function BlogPostCard() {
               See More
             </Button>
           </div>
+          </Link>
         </div>
       </section >
     </div >
