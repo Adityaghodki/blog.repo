@@ -1,18 +1,11 @@
-import React from "react";
-import {
-    Navbar,
-    Typography,
-    IconButton,
-    Avatar,
-    Collapse,
-} from "@material-tailwind/react";
-import { useContext } from "react";
-import { Link } from "react-router-dom";
-import { AiOutlineShareAlt, AiOutlineSearch } from 'react-icons/ai'
+import React, { useContext, useState } from "react";
+import { Navbar, Typography, IconButton, Avatar, Collapse } from "@material-tailwind/react";
+import { Link, Route, Routes, useNavigate } from "react-router-dom";
+import { AiOutlineSearch, AiOutlineShareAlt } from 'react-icons/ai';
 import myContext from "../../context/data/myContext";
-import SearchDialog from "../searchDialog/SearchDialog";
-import ShareDialogBox from "../shareDialogBox/ShareDialogBox";
-
+import SearchDialog from "../SearchDialog/SearchDialog";
+import ShareDialog from "../sharedialog/ShareDialog";
+import AllBlogs from "../../pages/allblogs/AllBlogs";
 
 export default function Nav() {
     const [openNav, setOpenNav] = React.useState(false);
@@ -87,7 +80,7 @@ export default function Nav() {
                             />
                             {/* Logo Text  */}
                             <span>
-                                Devknus
+                                BLOGACADEMY
                             </span>
                         </Typography>
                     </Link>
@@ -109,7 +102,7 @@ export default function Nav() {
                         {/* Share Icon */}
                         <div className="hidden lg:block">
                             {/* <AiOutlineShareAlt size={20} color="white" /> */}
-                            <ShareDialogBox/>
+                            <ShareDialog/>
                         </div>
 
                         {/* Admin Profile Pic */}

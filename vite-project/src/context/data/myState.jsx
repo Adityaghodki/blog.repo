@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import MyContext from './myContext';
 import { collection, deleteDoc, doc, onSnapshot, orderBy, query } from 'firebase/firestore';
-import { fireDb } from '../../firebase/FirebaseConfig';
+import { fireDB } from '../../firebase/FirebaseConfig';
 import toast from 'react-hot-toast';
 
 function MyState(props) {
@@ -27,7 +27,7 @@ function MyState(props) {
         setloading(true);
         try {
             const q = query(
-                collection(fireDb, "blogPost"),
+                collection(fireDB, "blogPost"),
                 orderBy('time')
             );
             const data = onSnapshot(q, (QuerySnapshot) => {
@@ -55,7 +55,7 @@ function MyState(props) {
     // Blog Delete Function 
     const deleteBlogs = async (id) => {
         try {
-            await deleteDoc(doc(fireDb, "blogPost", id));
+            await deleteDoc(doc(fireDB, "blogPost", id));
             getAllBlogs()
             toast.success("Blogs deleted successfully")
         } catch (error) {

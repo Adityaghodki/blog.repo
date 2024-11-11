@@ -10,7 +10,7 @@ import {
 import { Timestamp, addDoc, collection } from 'firebase/firestore';
 import toast from 'react-hot-toast';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
-import { fireDb, storage } from '../../../firebase/FirebaseConfig';
+import { fireDB, storage } from '../../../firebase/FirebaseConfig';
 function CreateBlog() {
     const context = useContext(myContext);
     const { mode } = context;
@@ -44,7 +44,7 @@ function CreateBlog() {
         const imageRef = ref(storage, `blogimage/${thumbnail.name}`);
         uploadBytes(imageRef, thumbnail).then((snapshot) => {
             getDownloadURL(snapshot.ref).then((url) => {
-                const productRef = collection(fireDb, "blogPost")
+                const productRef = collection(fireDB, "blogPost")
                 try {
                     addDoc(productRef, {
                         blogs,

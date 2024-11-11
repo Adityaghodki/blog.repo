@@ -3,6 +3,7 @@ import Layout from '../../../components/layout/Layout'
 import myContext from '../../../context/data/myContext';
 import { Button } from '@material-tailwind/react';
 import { Link, useNavigate } from 'react-router-dom';
+import { auth } from '../../../firebase/FirebaseConfig';
 
 function Dashboard() {
     const context = useContext(myContext);
@@ -19,6 +20,7 @@ function Dashboard() {
     useEffect(() => {
         window.scrollTo(0, 0)
  }, [])
+ console.log("auth is",auth)
     return (
         <Layout>
             <div className="py-10">
@@ -35,7 +37,7 @@ function Dashboard() {
                             className='text-center font-bold text-2xl mb-2'
                             style={{ color: mode === 'dark' ? 'white' : 'black' }}
                         >
-                            Kamal Nayan Upadhyay
+                            {auth?.currentUser?.displayName || auth?.currentUser?.email}
                         </h1>
 
                         <h2
@@ -43,7 +45,7 @@ function Dashboard() {
                             Software Developer
                         </h2>
                         <h2
-                            style={{ color: mode === 'dark' ? 'white' : 'black' }} className="font-semibold">knupadhyay784@gmail.com
+                            style={{ color: mode === 'dark' ? 'white' : 'black' }} className="font-semibold">{auth?.currentUser?.email}
                         </h2>
                         <h2
                             style={{ color: mode === 'dark' ? 'white' : 'black' }} className="font-semibold">
@@ -152,12 +154,12 @@ function Dashboard() {
 
                                                     {/* Blog Title  */}
                                                     <td style={{ color: mode === 'dark' ? 'white' : 'black' }} className="px-6 py-4">
-                                                        {item.blogs.title}
+                                                        {item?.title}
                                                     </td>
 
                                                     {/* Blog Category  */}
                                                     <td style={{ color: mode === 'dark' ? 'white' : 'black' }} className="px-6 py-4">
-                                                        {item.blogs.category}
+                                                        {item?.category}
                                                     </td>
 
                                                     {/* Blog Date  */}
